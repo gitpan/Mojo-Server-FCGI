@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Mojo-Server-FCGI
-version:             0.01
+version:             0.02
 abstract:            ~
 license:             perl
 author:              
@@ -9,7 +9,7 @@ generated_by:        ExtUtils::MakeMaker version 6.42
 distribution_type:   module
 requires:     
     FCGI:                          0.67
-    Mojo:                          0.8008
+    Mojo:                          0.8009
 meta-spec:
     url:     http://module-build.sourceforge.net/META-spec-v1.3.html
     version: 1.3
