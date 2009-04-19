@@ -1,4 +1,4 @@
-# Copyright (C) 2008, Sebastian Riedel.
+# Copyright (C) 2008-2009, Sebastian Riedel.
 
 package Mojo::Server::FCGI::Prefork;
 
@@ -9,7 +9,9 @@ use base 'Mojo::Server::Daemon::Prefork';
 
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr('path', chained => 1, default => sub { ':3000' });
+__PACKAGE__->attr(
+    fcgi => (chained => 1, default => sub { Mojo::Server::FCGI->new }));
+__PACKAGE__->attr(path => (chained => 1, default => sub {':3000'}));
 
 # Yeah, Moe, that team sure did suck last night. They just plain sucked!
 # I've seen teams suck before,
@@ -29,7 +31,7 @@ sub child {
     $self->accept_unlock;
 
     # Process
-    $self->{fcgi}->process;
+    $self->fcgi->process;
 }
 
 sub parent {
@@ -40,10 +42,8 @@ sub parent {
     die "Can't create listen socket: $!" unless $l;
     print "Server available at $path.\n";
 
-    $self->{req} = FCGI::Request(
-        \*STDIN, \*STDOUT, \*STDERR, \%ENV, $l, FCGI::FAIL_ACCEPT_ON_INTR
-    );
-    $self->{fcgi} = Mojo::Server::FCGI->new;
+    $self->{req} = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, \%ENV, $l,
+        FCGI::FAIL_ACCEPT_ON_INTR);
 }
 
 1;
@@ -56,8 +56,8 @@ Mojo::Server::FCGI::Prefork - Prefork FastCGI Server
 =head1 SYNOPSIS
 
     use Mojo::Server::FCGI::Prefork;
-    my $fcgi = Mojo::Server::FCGI::Prefork->new;
-    $fcgi->run;
+    my $prefork = Mojo::Server::FCGI::Prefork->new;
+    $prefork->run;
 
 =head1 DESCRIPTION
 
@@ -69,11 +69,18 @@ L<FCGI>.
 L<Mojo::Server::FCGI::Prefork> inherits all attributes from L<Mojo::Server>
 and implements the following new ones.
 
+=head2 C<fcgi>
+
+    my $fcgi = $prefork->fcgi;
+    $prefork = $prefork->fcgi(Mojo::Server::FCGI->new);
+
+    $prefork->fcgi->app_class('Mojo::HelloWorld');
+
 =head2 C<path>
 
-    my $path = $fcgi->path
-    $fcgi    = $fcgi->path(':3000');
-    $fcgi    = $fcgi->path('/some/unix.socket');
+    my $path = $prefork->path
+    $prefork = $prefork->path(':3000');
+    $prefork = $prefork->path('/some/unix.socket');
 
 =head1 METHODS
 
@@ -82,10 +89,10 @@ implements the following new ones.
 
 =head2 C<child>
 
-    $fcgi->child;
+    $prefork->child;
 
 =head2 C<parent>
 
-    $fcgi->parent;
+    $prefork->parent;
 
 =cut

@@ -1,4 +1,4 @@
-# Copyright (C) 2008, Sebastian Riedel.
+# Copyright (C) 2008-2009, Sebastian Riedel.
 
 package Mojo::Script::Fcgi;
 
@@ -9,7 +9,7 @@ use base 'Mojo::Script';
 
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr('description', chained => 1, default => <<'EOF');
+__PACKAGE__->attr(description => (chained => 1, default => <<'EOF'));
 * Start the fcgi script. *
 Takes no options.
     fcgi

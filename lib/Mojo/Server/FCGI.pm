@@ -1,4 +1,4 @@
-# Copyright (C) 2008, Sebastian Riedel.
+# Copyright (C) 2008-2009, Sebastian Riedel.
 
 package Mojo::Server::FCGI;
 
@@ -10,7 +10,7 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.05';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -25,10 +25,10 @@ sub process {
     $req->parse(\%ENV);
 
     # Request body
-    $req->state('body');
     while (!$req->is_state(qw/done error/)) {
-        last unless (my $read = STDIN->sysread(my $buffer, 4096, 0)) >= 0;
+        my $read = STDIN->sysread(my $buffer, 4096, 0);
         $req->parse($buffer);
+        last if $read <= 0;
     }
 
     # Handle
@@ -56,7 +56,7 @@ sub process {
         last unless length $chunk;
 
         # Headers
-        STDOUT->syswrite($chunk);
+        return unless defined STDOUT->syswrite($chunk);
         $offset += length $chunk;
     }
 
@@ -75,17 +75,17 @@ sub process {
         last unless length $chunk;
 
         # Content
-        STDOUT->syswrite($chunk);
+        return unless defined STDOUT->syswrite($chunk);
         $offset += length $chunk;
     }
 
-    return $res->code;
+    return 1;
 }
 
 sub run {
-    my $self = shift;
+    my $self    = shift;
     my $request = FCGI::Request();
-    while($request->Accept() >= 0) {
+    while ($request->Accept() >= 0) {
         $self->process;
     }
 }

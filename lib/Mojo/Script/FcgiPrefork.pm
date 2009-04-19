@@ -1,4 +1,4 @@
-# Copyright (C) 2008, Sebastian Riedel.
+# Copyright (C) 2008-2009, Sebastian Riedel.
 
 package Mojo::Script::FcgiPrefork;
 
@@ -9,7 +9,7 @@ use base 'Mojo::Script';
 
 use Mojo::Server::FCGI::Prefork;
 
-__PACKAGE__->attr('description', chained => 1, default => <<'EOF');
+__PACKAGE__->attr(description => (chained => 1, default => <<'EOF'));
 * Start the fcgi_prefork script. *
 Takes a path as option, by default :3000 will be used.
     fcgi_prefork

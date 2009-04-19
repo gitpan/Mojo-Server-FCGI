@@ -14,8 +14,8 @@ use Mojo::Template;
 use Mojo::Transaction;
 use Test::Mojo::Server;
 
-plan skip_all => 'set TEST_LIGHTTPD to enable this test (developer only!)'
-  unless $ENV{TEST_LIGHTTPD};
+plan skip_all => 'set TEST_APACHE to enable this test (developer only!)'
+  unless $ENV{TEST_APACHE};
 plan tests => 6;
 
 # They think they're so high and mighty,
@@ -27,42 +27,35 @@ my $server = Test::Mojo::Server->new;
 my $port   = $server->generate_port_ok;
 my $script = $server->home->executable;
 my $dir    = File::Temp::tempdir();
-my $config = File::Spec->catfile($dir, 'fcgi.config');
+my $config = File::Spec->catfile($dir, 'apache.conf');
 my $mt     = Mojo::Template->new;
 
 $mt->render_to_file(<<'EOF', $config, $dir, $port, $script);
 % my ($dir, $port, $script) = @_;
 % use File::Spec::Functions 'catfile'
-server.modules = (
-    "mod_access",
-    "mod_fastcgi",
-    "mod_rewrite",
-    "mod_accesslog"
-)
+ServerName 127.0.0.1
+Listen <%= $port %>
 
-server.document-root = "<%= $dir %>"
-server.errorlog    = "<%= catfile $dir, 'error.log' %>"
-accesslog.filename = "<%= catfile $dir, 'access.log' %>"
+LoadModule log_config_module libexec/apache2/mod_log_config.so
 
-server.bind = "127.0.0.1"
-server.port = <%= $port %>
+ErrorLog <%= catfile $dir, 'error.log' %>
 
-fastcgi.server = (
-    "/test" => (
-        "FastCgiTest" => (
-            "socket"          => "<%= catfile $dir, 'test.socket' %>",
-            "check-local"     => "disable",
-            "bin-path"        => "<%= $script %> fcgi",
-            "min-procs"       => 1,
-            "max-procs"       => 1,
-            "idle-timeout"    => 20
-        )
-    )
-)
+LoadModule alias_module libexec/apache2/mod_alias.so
+LoadModule fastcgi_module libexec/apache2/mod_fastcgi.so
+
+PidFile <%= catfile $dir, 'httpd.pid' %>
+LockFile <%= catfile $dir, 'accept.lock' %>
+
+DocumentRoot  <%= $dir %>
+
+FastCgiIpcDir <%= $dir %>
+FastCgiServer <%= $script %> -processes 1
+Alias / <%= $script %>/
+
 EOF
 
 # Start
-$server->command("lighttpd -D -f $config");
+$server->command("/usr/sbin/httpd -X -f $config");
 $server->start_server_ok;
 
 # Request

@@ -1,5 +1,7 @@
+.perltidyrc
 bin/mojo
 Changes
+examples/apache.conf
 examples/lighttpd-prefork.conf
 examples/lighttpd.conf
 lib/Mojo/Script/Fcgi.pm
@@ -9,6 +11,7 @@ lib/Mojo/Server/FCGI/Prefork.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
+t/apache_fcgi.t
 t/fcgi.t
 t/lighttpd_fcgi.t
 t/lighttpd_prefork_fcgi.t

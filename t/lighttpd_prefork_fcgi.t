@@ -1,6 +1,6 @@
 #!perl
 
-# Copyright (C) 2008, Sebastian Riedel.
+# Copyright (C) 2008-2009, Sebastian Riedel.
 
 use strict;
 use warnings;
@@ -25,9 +25,9 @@ plan tests => 9;
 use_ok('Mojo::Server::FCGI::Prefork');
 
 # FastCGI prefork daemon
-my $fcgi = Test::Mojo::Server->new;
+my $fcgi       = Test::Mojo::Server->new;
 my $executable = $fcgi->home->executable;
-my $fport = $fcgi->generate_port_ok;
+my $fport      = $fcgi->generate_port_ok;
 $fcgi->command("$executable fcgi_prefork :$fport");
 $fcgi->start_server_untested_ok;
 
@@ -68,12 +68,13 @@ fastcgi.server = (
     )
 )
 EOF
+
 # Start
 $server->command("lighttpd -D -f $config");
 $server->start_server_ok;
 
 # Request
-my $tx = Mojo::Transaction->new_get("http://127.0.0.1:$port/test/");
+my $tx     = Mojo::Transaction->new_get("http://127.0.0.1:$port/test/");
 my $client = Mojo::Client->new;
 $client->process_all($tx);
 is($tx->res->code, 200);
