@@ -9,9 +9,8 @@ use base 'Mojo::Server::Daemon::Prefork';
 
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr(
-    fcgi => (chained => 1, default => sub { Mojo::Server::FCGI->new }));
-__PACKAGE__->attr(path => (chained => 1, default => sub {':3000'}));
+__PACKAGE__->attr('fcgi', default => sub { Mojo::Server::FCGI->new });
+__PACKAGE__->attr('path', default => sub {':3000'});
 
 # Yeah, Moe, that team sure did suck last night. They just plain sucked!
 # I've seen teams suck before,

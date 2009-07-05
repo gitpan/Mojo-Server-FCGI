@@ -32,7 +32,7 @@ my $mt     = Mojo::Template->new;
 
 $mt->render_to_file(<<'EOF', $config, $dir, $port, $script);
 % my ($dir, $port, $script) = @_;
-% use File::Spec::Functions 'catfile'
+% use File::Spec::Functions 'catfile';
 ServerName 127.0.0.1
 Listen <%= $port %>
 

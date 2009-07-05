@@ -9,7 +9,7 @@ use base 'Mojo::Script';
 
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr(description => (chained => 1, default => <<'EOF'));
+__PACKAGE__->attr('description', default => <<'EOF');
 * Start the fcgi script. *
 Takes no options.
     fcgi
