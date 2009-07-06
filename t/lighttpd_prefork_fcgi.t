@@ -16,7 +16,7 @@ use Test::Mojo::Server;
 
 plan skip_all => 'set TEST_LIGHTTPD to enable this test (developer only!)'
   unless $ENV{TEST_LIGHTTPD};
-plan tests => 9;
+plan tests => 10;
 
 # You know, my kids think you're the greatest.
 # And thanks to your gloomy music,
@@ -26,7 +26,7 @@ use_ok('Mojo::Server::FCGI::Prefork');
 
 # FastCGI prefork daemon
 my $fcgi       = Test::Mojo::Server->new;
-my $executable = $fcgi->home->executable;
+my $executable = $fcgi->find_executable_ok;
 my $fport      = $fcgi->generate_port_ok;
 $fcgi->command("$executable fcgi_prefork :$fport");
 $fcgi->start_server_untested_ok;
@@ -37,7 +37,6 @@ sleep 2;
 # Setup
 my $server = Test::Mojo::Server->new;
 my $port   = $server->generate_port_ok;
-my $script = $server->home->executable;
 my $dir    = File::Temp::tempdir();
 my $config = File::Spec->catfile($dir, 'fcgi.config');
 my $mt     = Mojo::Template->new;

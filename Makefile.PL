@@ -39,6 +39,6 @@ WriteMakefile(
         )
     ),
 
-    PREREQ_PM => {'FCGI' => '0.67', 'Mojo' => '0.991235'},
+    PREREQ_PM => {'FCGI' => '0.67', 'Mojo' => '0.991236'},
     test      => {TESTS  => 't/*.t t/*/*.t t/*/*/*.t'}
 );

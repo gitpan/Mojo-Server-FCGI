@@ -16,22 +16,22 @@ use Test::Mojo::Server;
 
 plan skip_all => 'set TEST_APACHE to enable this test (developer only!)'
   unless $ENV{TEST_APACHE};
-plan tests => 6;
+plan tests => 7;
 
 # They think they're so high and mighty,
 # just because they never got caught driving without pants.
 use_ok('Mojo::Server::FCGI');
 
 # Setup
-my $server = Test::Mojo::Server->new;
-my $port   = $server->generate_port_ok;
-my $script = $server->home->executable;
-my $dir    = File::Temp::tempdir();
-my $config = File::Spec->catfile($dir, 'apache.conf');
-my $mt     = Mojo::Template->new;
+my $server     = Test::Mojo::Server->new;
+my $port       = $server->generate_port_ok;
+my $executable = $server->find_executable_ok;
+my $dir        = File::Temp::tempdir();
+my $config     = File::Spec->catfile($dir, 'apache.conf');
+my $mt         = Mojo::Template->new;
 
-$mt->render_to_file(<<'EOF', $config, $dir, $port, $script);
-% my ($dir, $port, $script) = @_;
+$mt->render_to_file(<<'EOF', $config, $dir, $port, $executable);
+% my ($dir, $port, $executable) = @_;
 % use File::Spec::Functions 'catfile';
 ServerName 127.0.0.1
 Listen <%= $port %>
@@ -49,8 +49,8 @@ LockFile <%= catfile $dir, 'accept.lock' %>
 DocumentRoot  <%= $dir %>
 
 FastCgiIpcDir <%= $dir %>
-FastCgiServer <%= $script %> -processes 1
-Alias / <%= $script %>/
+FastCgiServer <%= $executable %> -processes 1
+Alias / <%= $executable %>/
 
 EOF
 
