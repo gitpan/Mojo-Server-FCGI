@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/env perl -w
 
 # Copyright (C) 2008, Sebastian Riedel.
 
