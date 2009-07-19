@@ -7,6 +7,7 @@ use warnings;
 
 use base 'Mojo::Server::Daemon::Prefork';
 
+use Carp 'croak';
 use Mojo::Server::FCGI;
 
 __PACKAGE__->attr('fcgi', default => sub { Mojo::Server::FCGI->new });
@@ -38,7 +39,7 @@ sub parent {
 
     my $path = $self->path;
     my $l = FCGI::OpenSocket($path, $self->listen_queue_size);
-    die "Can't create listen socket: $!" unless $l;
+    croak "Can't create listen socket: $!" unless $l;
     print "Server available at $path.\n";
 
     $self->{req} = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, \%ENV, $l,

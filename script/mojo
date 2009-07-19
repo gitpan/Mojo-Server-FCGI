@@ -24,9 +24,8 @@ Please visit http://mojolicious.org for detailed installation instructions.
 
 EOF
 
-# Start the script system
-my $scripts = Mojo::Scripts->new;
-
 # Default for Apache
 $ARGV[0] ||= 'fcgi';
-$scripts->run(@ARGV);
+
+# Start the script system
+Mojo::Scripts->new->run(@ARGV);
