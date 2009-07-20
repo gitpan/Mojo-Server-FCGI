@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Mojo-Server-FCGI
-version:            0.10
+version:            0.11
 abstract:           ~
 author:
     - Sebastian Riedel <sri@cpan.org>

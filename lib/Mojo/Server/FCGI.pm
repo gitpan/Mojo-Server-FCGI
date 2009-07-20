@@ -10,7 +10,7 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -83,7 +83,12 @@ sub process {
 }
 
 sub run {
-    my $self    = shift;
+    my $self = shift;
+
+    # Preload
+    $self->app;
+
+    # Loop
     my $request = FCGI::Request();
     while ($request->Accept() >= 0) {
         $self->process;
