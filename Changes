@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension Mojo::Server::FCGI.
 
+0.12    2009-07-28 00:00:00
+        - Updated for latest Mojo release.
+
 0.11    2009-07-20 00:00:00
         - Fixed bug where environment variables would be ignored.
 

@@ -28,7 +28,7 @@ use_ok('Mojo::Server::FCGI::Prefork');
 my $fcgi       = Test::Mojo::Server->new;
 my $executable = $fcgi->find_executable_ok;
 my $fport      = $fcgi->generate_port_ok;
-$fcgi->command("$executable fcgi_prefork :$fport");
+$fcgi->command("$executable fcgi_prefork --listen :$fport");
 $fcgi->start_server_untested_ok;
 
 # Wait

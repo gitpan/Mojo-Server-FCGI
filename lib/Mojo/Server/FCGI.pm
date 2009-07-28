@@ -10,7 +10,7 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*

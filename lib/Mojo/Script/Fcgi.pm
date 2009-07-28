@@ -10,9 +10,10 @@ use base 'Mojo::Script';
 use Mojo::Server::FCGI;
 
 __PACKAGE__->attr('description', default => <<'EOF');
-* Start the fcgi script. *
-Takes no options.
-    fcgi
+Start application with FCGI backend.
+EOF
+__PACKAGE__->attr('usage', default => <<"EOF");
+usage: $0 fcgi
 EOF
 
 # Oh boy! Sleep! That's when I'm a Viking!
@@ -48,6 +49,11 @@ implements the following new ones.
 
     my $description = $fcgi->description;
     $fcgi           = $fcgi->description('Foo!');
+
+=head2 C<usage>
+
+    my $usage = $fcgi->usage;
+    $fcgi     = $fcgi->usage('Foo!');
 
 =head1 METHODS
 
