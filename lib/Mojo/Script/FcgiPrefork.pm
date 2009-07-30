@@ -9,7 +9,7 @@ use base 'Mojo::Script';
 
 use Mojo::Server::FCGI::Prefork;
 
-use Getopt::Long 'GetOptionsFromArray';
+use Getopt::Long 'GetOptions';
 
 __PACKAGE__->attr('description', default => <<'EOF');
 Start application with preforking FCGI backend.
@@ -18,11 +18,11 @@ __PACKAGE__->attr('usage', default => <<"EOF");
 usage: $0 fcgi_prefork [OPTIONS]
 
 These options are available:
-  --clients <limit>       Set maximum number of concurrent clients per child,
+  --clients <number>      Set maximum number of concurrent clients per child,
                           defaults to 1.
-  --daemonize             Daemonize process.
-  --group <name>          Set group name for child processes.
-  --idle <seconds>        Set time processes can be idle without getting
+  --daemonize             Daemonize parent.
+  --group <name>          Set group name for children.
+  --idle <seconds>        Set time children can be idle without getting
                           killed, defaults to 30.
   --interval <seconds>    Set interval for process maintainance, defaults to
                           15.
@@ -34,11 +34,10 @@ These options are available:
                           temporary file.
   --requests <number>     Set maximum number of requests per keep-alive
                           connection, defaults to 100.
-  --servers <number>      Set maximum number of child processes, defaults to
-                          100.
+  --servers <number>      Set maximum number of children, defaults to 100.
   --start <number>        Set number of children to spawn at startup,
                           defaults to 5.
-  --user <name>           Set user name for child processes.
+  --user <name>           Set user name for children.
 EOF
 
 # Oh boy! Sleep! That's when I'm a Viking!
@@ -48,9 +47,8 @@ sub run {
 
     # Options
     my $daemonize;
-    my @options = @_ ? @_ : @ARGV;
-    GetOptionsFromArray(
-        \@options,
+    @ARGV = @_ if @_;
+    GetOptions(
         'clients=i'   => sub { $fcgi->max_clients($_[1]) },
         'daemonize'   => \$daemonize,
         'group=s'     => sub { $fcgi->group($_[1]) },

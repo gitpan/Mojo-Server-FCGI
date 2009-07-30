@@ -10,7 +10,7 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -129,5 +129,26 @@ implements the following new ones.
 =head2 C<run>
 
     $fcgi->run;
+
+=head1 SEE ALSO
+
+L<Mojo>
+
+=head1 AUTHOR
+
+Sebastian Riedel, C<sri@cpan.org>.
+
+=head1 CREDITS
+
+Kevin Old
+
+Viacheslav Tikhanovskii
+
+=head1 COPYRIGHT
+
+Copyright (C) 2008-2009, Sebastian Riedel.
+
+This program is free software, you can redistribute it and/or modify it under
+the same terms as Perl 5.10.
 
 =cut
