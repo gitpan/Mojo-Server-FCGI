@@ -21,18 +21,7 @@ plan tests => 10;
 # You know, my kids think you're the greatest.
 # And thanks to your gloomy music,
 # they've finally stopped dreaming of a future I can't possibly provide.
-
 use_ok('Mojo::Server::FCGI::Prefork');
-
-# FastCGI prefork daemon
-my $fcgi       = Test::Mojo::Server->new;
-my $executable = $fcgi->find_executable_ok;
-my $fport      = $fcgi->generate_port_ok;
-$fcgi->command("$executable fcgi_prefork --listen :$fport");
-$fcgi->start_server_untested_ok;
-
-# Wait
-sleep 2;
 
 # Setup
 my $server = Test::Mojo::Server->new;
@@ -40,6 +29,36 @@ my $port   = $server->generate_port_ok;
 my $dir    = File::Temp::tempdir();
 my $config = File::Spec->catfile($dir, 'fcgi.config');
 my $mt     = Mojo::Template->new;
+
+# FCGI setup
+my $fcgi    = File::Spec->catfile($dir, 'test.pl');
+my $prefork = Test::Mojo::Server->new;
+my $fport   = $prefork->generate_port_ok;
+$mt->render_to_file(<<'EOF', $fcgi, $fport);
+% my $fport = shift;
+#!<%= $^X %>
+
+use strict;
+use warnings;
+
+% use FindBin;
+use lib '<%= "$FindBin::Bin/../../lib" %>';
+
+use Mojo::Server::FCGI::Prefork;
+
+Mojo::Server::FCGI::Prefork->new->path(':<%= $fport %>')->run;
+
+1;
+EOF
+chmod 0777, $fcgi;
+ok(-x $fcgi);
+
+# FastCGI prefork daemon
+$prefork->command("$fcgi");
+$prefork->start_server_untested_ok;
+
+# Wait
+sleep 2;
 
 $mt->render_to_file(<<'EOF', $config, $dir, $port, $fport);
 % my ($dir, $port, $fport) = @_;
@@ -80,5 +99,5 @@ is($tx->res->code, 200);
 like($tx->res->body, qr/Mojo is working/);
 
 # Stop
-$fcgi->stop_server_ok;
+$prefork->stop_server_ok;
 $server->stop_server_ok;

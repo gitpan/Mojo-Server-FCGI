@@ -16,6 +16,7 @@ my $mm = $ExtUtils::MakeMaker::VERSION;
 WriteMakefile(
     NAME         => 'Mojo::Server::FCGI',
     VERSION_FROM => 'lib/Mojo/Server/FCGI.pm',
+    ABSTRACT     => 'Speedy FastCGI implementation',
     AUTHOR       => 'Sebastian Riedel <sri@cpan.org>',
 
     ($mm < 6.3002 ? () : ('LICENSE' => 'perl',)),
@@ -23,6 +24,7 @@ WriteMakefile(
     (   $mm < 6.46
         ? ()
         : ( META_MERGE => {
+                requires  => {perl => '5.008001'},
                 resources => {
                     license    => 'http://dev.perl.org/licenses/',
                     homepage   => 'http://mojolicious.org',
@@ -39,6 +41,16 @@ WriteMakefile(
         )
     ),
 
-    PREREQ_PM => {'FCGI' => '0.67', 'Mojo' => '0.991242'},
-    test      => {TESTS  => 't/*.t t/*/*.t t/*/*/*.t'}
+    PREREQ_PM => {
+        'Carp'                => 0,
+        'ExtUtils::MakeMaker' => 0,
+        'FCGI'                => '0.67',
+        'File::Spec'          => 0,
+        'File::Temp'          => 0,
+        'FindBin'             => 0,
+        'Getopt::Long'        => 0,
+        'Mojo'                => '0.991242',
+        'Test::More'          => 0,
+    },
+    test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
 );

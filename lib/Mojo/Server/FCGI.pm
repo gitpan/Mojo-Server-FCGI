@@ -10,7 +10,7 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -147,6 +147,8 @@ Viacheslav Tikhanovskii
 =head1 COPYRIGHT
 
 Copyright (C) 2008-2009, Sebastian Riedel.
+
+=head1 LICENSE
 
 This program is free software, you can redistribute it and/or modify it under
 the same terms as Perl 5.10.

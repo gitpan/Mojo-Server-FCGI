@@ -10,7 +10,7 @@ lib/Mojo/Server/FCGI/Prefork.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
-script/mojo
+README
 t/apache_fcgi.t
 t/fcgi.t
 t/lighttpd_fcgi.t

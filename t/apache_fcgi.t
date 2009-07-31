@@ -18,20 +18,39 @@ plan skip_all => 'set TEST_APACHE to enable this test (developer only!)'
   unless $ENV{TEST_APACHE};
 plan tests => 7;
 
-# They think they're so high and mighty,
-# just because they never got caught driving without pants.
+# Robots don't have any emotions, and sometimes that makes me very sad.
 use_ok('Mojo::Server::FCGI');
 
 # Setup
-my $server     = Test::Mojo::Server->new;
-my $port       = $server->generate_port_ok;
-my $executable = $server->find_executable_ok;
-my $dir        = File::Temp::tempdir();
-my $config     = File::Spec->catfile($dir, 'apache.conf');
-my $mt         = Mojo::Template->new;
+my $server = Test::Mojo::Server->new;
+my $port   = $server->generate_port_ok;
+my $dir    = File::Temp::tempdir();
+my $config = File::Spec->catfile($dir, 'fcgi.config');
+my $mt     = Mojo::Template->new;
 
-$mt->render_to_file(<<'EOF', $config, $dir, $port, $executable);
-% my ($dir, $port, $executable) = @_;
+# FCGI setup
+my $fcgi = File::Spec->catfile($dir, 'test.fcgi');
+$mt->render_to_file(<<'EOF', $fcgi);
+#!<%= $^X %>
+
+use strict;
+use warnings;
+
+% use FindBin;
+use lib '<%= "$FindBin::Bin/../../lib" %>';
+
+use Mojo::Server::FCGI;
+
+Mojo::Server::FCGI->new->run;
+
+1;
+EOF
+chmod 0777, $fcgi;
+ok(-x $fcgi);
+
+# Apache setup
+$mt->render_to_file(<<'EOF', $config, $dir, $port, $fcgi);
+% my ($dir, $port, $fcgi) = @_;
 % use File::Spec::Functions 'catfile';
 ServerName 127.0.0.1
 Listen <%= $port %>
@@ -49,9 +68,8 @@ LockFile <%= catfile $dir, 'accept.lock' %>
 DocumentRoot  <%= $dir %>
 
 FastCgiIpcDir <%= $dir %>
-FastCgiServer <%= $executable %> -processes 1
-Alias / <%= $executable %>/
-
+FastCgiServer <%= $fcgi %> -processes 1
+Alias / <%= $fcgi %>/
 EOF
 
 # Start
@@ -59,7 +77,7 @@ $server->command("/usr/sbin/httpd -X -f $config");
 $server->start_server_ok;
 
 # Request
-my $tx     = Mojo::Transaction->new_get("http://127.0.0.1:$port/test/");
+my $tx     = Mojo::Transaction->new_get("http://127.0.0.1:$port/");
 my $client = Mojo::Client->new;
 $client->process_all($tx);
 is($tx->res->code, 200);
