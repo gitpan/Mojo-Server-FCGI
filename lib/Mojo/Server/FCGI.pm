@@ -10,7 +10,9 @@ use bytes;
 
 use FCGI;
 
-our $VERSION = '0.14';
+use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE} || 4096;
+
+our $VERSION = '0.15';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -26,7 +28,7 @@ sub process {
 
     # Request body
     while (!$req->is_state(qw/done error/)) {
-        my $read = STDIN->sysread(my $buffer, 4096, 0);
+        my $read = STDIN->sysread(my $buffer, CHUNK_SIZE, 0);
         $req->parse($buffer);
         last if $read <= 0;
     }
@@ -140,6 +142,8 @@ Sebastian Riedel, C<sri@cpan.org>.
 
 =head1 CREDITS
 
+In alphabetical order:
+
 Kevin Old
 
 Viacheslav Tikhanovskii
@@ -151,6 +155,6 @@ Copyright (C) 2008-2009, Sebastian Riedel.
 =head1 LICENSE
 
 This program is free software, you can redistribute it and/or modify it under
-the same terms as Perl 5.10.
+the terms of the Artistic License version 2.0.
 
 =cut
