@@ -1,7 +1,7 @@
 Mojo::Server::FCGI is a very speedy FastCGI implementation using FCGI and the
 preferred deployment option for production servers under heavy load.
 
-Just run the following commands to install Mojo::Server::FCGI.
+To install this module type the following:
 
     perl Makefile.PL
     make

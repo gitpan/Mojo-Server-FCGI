@@ -12,7 +12,7 @@ use FCGI;
 
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE} || 4096;
 
-our $VERSION = '0.16';
+our $VERSION = '0.17';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -148,11 +148,9 @@ Kevin Old
 
 Viacheslav Tikhanovskii
 
-=head1 COPYRIGHT
+=head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2008-2009, Sebastian Riedel.
-
-=head1 LICENSE
 
 This program is free software, you can redistribute it and/or modify it under
 the terms of the Artistic License version 2.0.
