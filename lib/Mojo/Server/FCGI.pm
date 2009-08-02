@@ -12,7 +12,7 @@ use FCGI;
 
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE} || 4096;
 
-our $VERSION = '0.15';
+our $VERSION = '0.16';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
