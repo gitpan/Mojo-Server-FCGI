@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Mojo-Server-FCGI
-version:            0.18
+version:            0.19
 abstract:           Speedy FastCGI implementation
 author:
     - Sebastian Riedel <sri@cpan.org>
