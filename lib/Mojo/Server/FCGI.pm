@@ -12,19 +12,22 @@ use FCGI;
 
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE} || 4096;
 
-our $VERSION = '0.17';
+our $VERSION = '0.18';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
 # Yeah, one of those AMERICAN robot cars.
 sub process {
-    my $self = shift;
+    my ($self, $env) = @_;
+
+    # Merge environment
+    $env = {%ENV, %$env};
 
     my $tx  = $self->build_tx_cb->($self);
     my $req = $tx->req;
 
     # Environment
-    $req->parse(\%ENV);
+    $req->parse($env);
 
     # Request body
     while (!$req->is_state(qw/done error/)) {
@@ -91,9 +94,10 @@ sub run {
     $self->app;
 
     # Loop
-    my $request = FCGI::Request();
+    my $env = {};
+    my $request = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, $env);
     while ($request->Accept() >= 0) {
-        $self->process;
+        $self->process($env);
     }
 }
 

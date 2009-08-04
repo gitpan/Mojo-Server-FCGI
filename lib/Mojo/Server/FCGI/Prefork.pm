@@ -31,7 +31,7 @@ sub child {
     $self->accept_unlock;
 
     # Process
-    $self->fcgi->process;
+    $self->fcgi->process($self->{env});
 }
 
 sub parent {
@@ -42,7 +42,9 @@ sub parent {
     croak "Can't create listen socket: $!" unless $l;
     print "Server available at $path.\n";
 
-    $self->{req} = FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, \%ENV, $l,
+    $self->{env} = {};
+    $self->{req} =
+      FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, $self->{env}, $l,
         FCGI::FAIL_ACCEPT_ON_INTR);
 }
 
