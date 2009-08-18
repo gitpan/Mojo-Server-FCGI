@@ -10,15 +10,24 @@ use bytes;
 
 use FCGI;
 
-use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE} || 4096;
+use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
+use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.19';
+our $VERSION = '0.20';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
 # Yeah, one of those AMERICAN robot cars.
 sub process {
     my ($self, $env) = @_;
+
+    # Debug
+    if (DEBUG) {
+        for my $name (keys %$env) {
+            my $value = $env->{$name};
+            $self->app->log->debug(qq/FCGI param: $name - "$value"./);
+        }
+    }
 
     # Merge environment
     $env = {%ENV, %$env};

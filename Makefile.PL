@@ -49,7 +49,7 @@ WriteMakefile(
         'File::Temp'          => 0,
         'FindBin'             => 0,
         'Getopt::Long'        => 0,
-        'Mojo'                => '0.991242',
+        'Mojo'                => '0.991250',
         'Test::More'          => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}

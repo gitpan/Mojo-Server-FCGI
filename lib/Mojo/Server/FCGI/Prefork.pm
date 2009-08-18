@@ -10,8 +10,11 @@ use base 'Mojo::Server::Daemon::Prefork';
 use Carp 'croak';
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr('fcgi', default => sub { Mojo::Server::FCGI->new });
-__PACKAGE__->attr('path', default => sub {':3000'});
+__PACKAGE__->attr(fcgi => sub { Mojo::Server::FCGI->new });
+__PACKAGE__->attr(path => sub {':3000'});
+
+__PACKAGE__->attr(_env => sub { {} });
+__PACKAGE__->attr('_req');
 
 # Yeah, Moe, that team sure did suck last night. They just plain sucked!
 # I've seen teams suck before,
@@ -25,13 +28,13 @@ sub child {
     $self->accept_lock;
 
     # Accept
-    $self->{req}->Accept();
+    $self->_req->Accept();
 
     # Unlock
     $self->accept_unlock;
 
     # Process
-    $self->fcgi->process($self->{env});
+    $self->fcgi->process($self->_env);
 }
 
 sub parent {
@@ -42,10 +45,12 @@ sub parent {
     croak "Can't create listen socket: $!" unless $l;
     print "Server available at $path.\n";
 
-    $self->{env} = {};
-    $self->{req} =
-      FCGI::Request(\*STDIN, \*STDOUT, \*STDERR, $self->{env}, $l,
-        FCGI::FAIL_ACCEPT_ON_INTR);
+    $self->_req(
+        FCGI::Request(
+            \*STDIN,     \*STDOUT, \*STDERR,
+            $self->_env, $l,       FCGI::FAIL_ACCEPT_ON_INTR
+        )
+    );
 }
 
 1;

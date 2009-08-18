@@ -1,5 +1,9 @@
 This file documents the revision history for Perl extension Mojo::Server::FCGI.
 
+0.20    2009-08-18 00:00:00
+        - Updated for latest Mojo release.
+        - Made CGI environment easier to debug.
+
 0.19    2009-08-01 00:00:00
         - Fixed typos.
 

@@ -3,8 +3,8 @@ Changes
 examples/apache.conf
 examples/lighttpd-prefork.conf
 examples/lighttpd.conf
-lib/Mojo/Script/Fcgi.pm
-lib/Mojo/Script/FcgiPrefork.pm
+lib/Mojo/Command/Fcgi.pm
+lib/Mojo/Command/FcgiPrefork.pm
 lib/Mojo/Server/FCGI.pm
 lib/Mojo/Server/FCGI/Prefork.pm
 LICENSE

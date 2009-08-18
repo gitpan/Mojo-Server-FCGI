@@ -1,20 +1,20 @@
 # Copyright (C) 2008-2009, Sebastian Riedel.
 
-package Mojo::Script::FcgiPrefork;
+package Mojo::Command::FcgiPrefork;
 
 use strict;
 use warnings;
 
-use base 'Mojo::Script';
+use base 'Mojo::Command';
 
 use Mojo::Server::FCGI::Prefork;
 
 use Getopt::Long 'GetOptions';
 
-__PACKAGE__->attr('description', default => <<'EOF');
+__PACKAGE__->attr(description => <<'EOF');
 Start application with preforking FCGI backend.
 EOF
-__PACKAGE__->attr('usage', default => <<"EOF");
+__PACKAGE__->attr(usage => <<"EOF");
 usage: $0 fcgi_prefork [OPTIONS]
 
 These options are available:
@@ -78,23 +78,23 @@ __END__
 
 =head1 NAME
 
-Mojo::Script::FcgiPrefork - FCGI Prefork Script
+Mojo::Command::FcgiPrefork - FCGI Prefork Command
 
 =head1 SYNOPSIS
 
-    use Mojo::Script::FcgiPrefork;
+    use Mojo::Command::FcgiPrefork;
 
-    my $fcgi = Mojo::Script::FcgiPrefork->new;
+    my $fcgi = Mojo::Command::FcgiPrefork->new;
     $fcgi->run(@ARGV);
 
 =head1 DESCRIPTION
 
-L<Mojo::Script::FcgiPrefork> is a script interface to
+L<Mojo::Command::FcgiPrefork> is a command interface to
 L<Mojo::Server::FCGI::Prefork>.
 
 =head1 ATTRIBUTES
 
-L<Mojo::Script::FcgiPrefork> inherits all attributes from L<Mojo::Script>
+L<Mojo::Command::FcgiPrefork> inherits all attributes from L<Mojo::Command>
 and implements the following new ones.
 
 =head2 C<description>
@@ -109,7 +109,7 @@ and implements the following new ones.
 
 =head1 METHODS
 
-L<Mojo::Script::FcgiPrefork> inherits all methods from L<Mojo::Script> and
+L<Mojo::Command::FcgiPrefork> inherits all methods from L<Mojo::Command> and
 implements the following new ones.
 
 =head2 C<run>

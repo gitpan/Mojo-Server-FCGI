@@ -1,18 +1,18 @@
 # Copyright (C) 2008-2009, Sebastian Riedel.
 
-package Mojo::Script::Fcgi;
+package Mojo::Command::Fcgi;
 
 use strict;
 use warnings;
 
-use base 'Mojo::Script';
+use base 'Mojo::Command';
 
 use Mojo::Server::FCGI;
 
-__PACKAGE__->attr('description', default => <<'EOF');
+__PACKAGE__->attr(description => <<'EOF');
 Start application with FCGI backend.
 EOF
-__PACKAGE__->attr('usage', default => <<"EOF");
+__PACKAGE__->attr(usage => <<"EOF");
 usage: $0 fcgi
 EOF
 
@@ -27,22 +27,22 @@ __END__
 
 =head1 NAME
 
-Mojo::Script::Fcgi - FCGI Script
+Mojo::Command::Fcgi - FCGI Command
 
 =head1 SYNOPSIS
 
-    use Mojo::Script::Fcgi;
+    use Mojo::Command::Fcgi;
 
-    my $fcgi = Mojo::Script::Fcgi->new;
+    my $fcgi = Mojo::Command::Fcgi->new;
     $fcgi->run(@ARGV);
 
 =head1 DESCRIPTION
 
-L<Mojo::Script::Fcgi> is a script interface to L<Mojo::Server::FCGI>.
+L<Mojo::Command::Fcgi> is a command interface to L<Mojo::Server::FCGI>.
 
 =head1 ATTRIBUTES
 
-L<Mojo::Script::Fcgi> inherits all attributes from L<Mojo::Script> and
+L<Mojo::Command::Fcgi> inherits all attributes from L<Mojo::Command> and
 implements the following new ones.
 
 =head2 C<description>
@@ -57,7 +57,7 @@ implements the following new ones.
 
 =head1 METHODS
 
-L<Mojo::Script::Fcgi> inherits all methods from L<Mojo::Script> and
+L<Mojo::Command::Fcgi> inherits all methods from L<Mojo::Command> and
 implements the following new ones.
 
 =head2 C<run>
