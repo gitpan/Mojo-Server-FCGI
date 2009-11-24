@@ -55,12 +55,13 @@ sub run {
         'idle=i'      => sub { $fcgi->idle_timeout($_[1]) },
         'interval=i'  => sub { $fcgi->cleanup_interval($_[1]) },
         'keepalive=i' => sub { $fcgi->keep_alive_timeout($_[1]) },
-        'listen=s'    => sub { $fcgi->path($_[1]) },
+        'listen=s'    => sub { $fcgi->listen($_[1]) },
         'maxspare=i'  => sub { $fcgi->max_spare_servers($_[1]) },
         'minspare=i'  => sub { $fcgi->min_spare_servers($_[1]) },
         'pid=s'       => sub { $fcgi->pid_file($_[1]) },
         'requests=i'  => sub { $fcgi->max_keep_alive_requests($_[1]) },
         'servers=i'   => sub { $fcgi->max_servers($_[1]) },
+        'start=i'     => sub { $fcgi->start_servers($_[1]) },
         'user=s'      => sub { $fcgi->user($_[1]) }
     );
 

@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Mojo-Server-FCGI
-version:            0.20
+version:            0.22
 abstract:           Speedy FastCGI implementation
 author:
     - Sebastian Riedel <sri@cpan.org>
@@ -16,7 +16,7 @@ requires:
     File::Temp:           0
     FindBin:              0
     Getopt::Long:         0
-    Mojo:                 0.991250
+    Mojo:                 0.999911
     perl:                 5.008001
     Test::More:           0
 resources:
@@ -29,7 +29,7 @@ no_index:
         - t
         - inc
         - t
-generated_by:       ExtUtils::MakeMaker version 6.54
+generated_by:       ExtUtils::MakeMaker version 6.55_02
 meta-spec:
     url:      http://module-build.sourceforge.net/META-spec-v1.4.html
     version:  1.4

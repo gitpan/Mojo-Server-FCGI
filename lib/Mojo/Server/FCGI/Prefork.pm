@@ -9,9 +9,10 @@ use base 'Mojo::Server::Daemon::Prefork';
 
 use Carp 'croak';
 use Mojo::Server::FCGI;
+use Socket;
 
-__PACKAGE__->attr(fcgi => sub { Mojo::Server::FCGI->new });
-__PACKAGE__->attr(path => sub {':3000'});
+__PACKAGE__->attr(fcgi   => sub { Mojo::Server::FCGI->new });
+__PACKAGE__->attr(listen => sub {':3000'});
 
 __PACKAGE__->attr(_env => sub { {} });
 __PACKAGE__->attr('_req');
@@ -40,10 +41,10 @@ sub child {
 sub parent {
     my $self = shift;
 
-    my $path = $self->path;
-    my $l = FCGI::OpenSocket($path, $self->listen_queue_size);
+    my $listen = $self->listen;
+    my $l = FCGI::OpenSocket($listen, $self->listen_queue_size || SOMAXCONN);
     croak "Can't create listen socket: $!" unless $l;
-    print "Server available at $path.\n";
+    print "Server available at $listen.\n";
 
     $self->_req(
         FCGI::Request(
@@ -83,11 +84,11 @@ and implements the following new ones.
 
     $prefork->fcgi->app_class('Mojo::HelloWorld');
 
-=head2 C<path>
+=head2 C<listen>
 
-    my $path = $prefork->path
-    $prefork = $prefork->path(':3000');
-    $prefork = $prefork->path('/some/unix.socket');
+    my $listen = $prefork->listen
+    $prefork   = $prefork->listen(':3000');
+    $prefork   = $prefork->listen('/some/unix.socket');
 
 =head1 METHODS
 

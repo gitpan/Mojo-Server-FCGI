@@ -11,7 +11,6 @@ use File::Spec;
 use File::Temp;
 use Mojo::Client;
 use Mojo::Template;
-use Mojo::Transaction::Single;
 use Test::Mojo::Server;
 
 plan skip_all => 'set TEST_LIGHTTPD to enable this test (developer only!)'
@@ -46,7 +45,7 @@ use lib '<%= "$FindBin::Bin/../../lib" %>';
 
 use Mojo::Server::FCGI::Prefork;
 
-Mojo::Server::FCGI::Prefork->new->path(':<%= $fport %>')->run;
+Mojo::Server::FCGI::Prefork->new->listen(':<%= $fport %>')->run;
 
 1;
 EOF
@@ -92,11 +91,14 @@ $server->command("lighttpd -D -f $config");
 $server->start_server_ok;
 
 # Request
-my $tx = Mojo::Transaction::Single->new_get("http://127.0.0.1:$port/test/");
 my $client = Mojo::Client->new;
-$client->process($tx);
-is($tx->res->code, 200);
-like($tx->res->body, qr/Mojo is working/);
+$client->get(
+    "http://127.0.0.1:$port/test/" => sub {
+        my ($self, $tx) = @_;
+        is($tx->res->code, 200);
+        like($tx->res->body, qr/Mojo is working/);
+    }
+)->process;
 
 # Stop
 $prefork->stop_server_ok;

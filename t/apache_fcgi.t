@@ -11,7 +11,6 @@ use File::Spec;
 use File::Temp;
 use Mojo::Client;
 use Mojo::Template;
-use Mojo::Transaction::Single;
 use Test::Mojo::Server;
 
 plan skip_all => 'set TEST_APACHE to enable this test (developer only!)'
@@ -28,7 +27,7 @@ my $dir    = File::Temp::tempdir();
 my $config = File::Spec->catfile($dir, 'fcgi.config');
 my $mt     = Mojo::Template->new;
 
-# FCGI setup
+# FastCGI setup
 my $fcgi = File::Spec->catfile($dir, 'test.fcgi');
 $mt->render_to_file(<<'EOF', $fcgi);
 #!<%= $^X %>
@@ -77,11 +76,14 @@ $server->command("/usr/sbin/httpd -X -f $config");
 $server->start_server_ok;
 
 # Request
-my $tx     = Mojo::Transaction::Single->new_get("http://127.0.0.1:$port/");
 my $client = Mojo::Client->new;
-$client->process($tx);
-is($tx->res->code, 200);
-like($tx->res->body, qr/Mojo is working/);
+$client->get(
+    "http://127.0.0.1:$port/" => sub {
+        my ($self, $tx) = @_;
+        is($tx->res->code, 200);
+        like($tx->res->body, qr/Mojo is working/);
+    }
+)->process;
 
 # Stop
 $server->stop_server_ok;
