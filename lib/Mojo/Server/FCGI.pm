@@ -13,7 +13,7 @@ use FCGI;
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
 use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.22';
+our $VERSION = '0.23';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -37,6 +37,10 @@ sub process {
 
     # Environment
     $req->parse($env);
+
+    # Store connection information
+    $tx->remote_address($env->{REMOTE_ADDR}) if $env->{REMOTE_ADDR};
+    $tx->local_port($env->{SERVER_PORT})     if $env->{SERVER_PORT};
 
     # Request body
     while (!$req->is_state(qw/done error/)) {
