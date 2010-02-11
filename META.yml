@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Mojo-Server-FCGI
-version:            0.23
+version:            0.24
 abstract:           Speedy FastCGI implementation
 author:
     - Sebastian Riedel <sri@cpan.org>
@@ -16,14 +16,14 @@ requires:
     File::Temp:           0
     FindBin:              0
     Getopt::Long:         0
-    Mojo:                 0.999911
+    Mojo:                 0.999920
     perl:                 5.008001
     Test::More:           0
 resources:
     homepage:     http://mojolicious.org
     license:      http://dev.perl.org/licenses/
     MailingList:  http://lists.kraih.com/cgi-bin/mailman/listinfo
-    repository:   http://github.com/kraih/mojo/tree/master
+    repository:   http://github.com/kraih/mojo
 no_index:
     directory:
         - t

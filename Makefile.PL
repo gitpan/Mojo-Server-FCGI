@@ -28,7 +28,7 @@ WriteMakefile(
                 resources => {
                     license    => 'http://dev.perl.org/licenses/',
                     homepage   => 'http://mojolicious.org',
-                    repository => 'http://github.com/kraih/mojo/tree/master',
+                    repository => 'http://github.com/kraih/mojo',
                     MailingList =>
                       'http://lists.kraih.com/cgi-bin/mailman/listinfo',
                 },
@@ -49,7 +49,7 @@ WriteMakefile(
         'File::Temp'          => 0,
         'FindBin'             => 0,
         'Getopt::Long'        => 0,
-        'Mojo'                => '0.999911',
+        'Mojo'                => '0.999920',
         'Test::More'          => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}

@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2009, Sebastian Riedel.
+# Copyright (C) 2008-2010, Sebastian Riedel.
 
 package Mojo::Server::FCGI;
 
@@ -13,7 +13,7 @@ use FCGI;
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
 use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.23';
+our $VERSION = '0.24';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -163,11 +163,13 @@ In alphabetical order:
 
 Kevin Old
 
-Viacheslav Tikhanovskii
+Sergey Zasenko
+
+Viacheslav Tykhanovskyi
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2008-2009, Sebastian Riedel.
+Copyright (C) 2008-2010, Sebastian Riedel.
 
 This program is free software, you can redistribute it and/or modify it under
 the terms of the Artistic License version 2.0.

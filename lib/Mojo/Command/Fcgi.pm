@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2009, Sebastian Riedel.
+# Copyright (C) 2008-2010, Sebastian Riedel.
 
 package Mojo::Command::Fcgi;
 
@@ -7,19 +7,32 @@ use warnings;
 
 use base 'Mojo::Command';
 
+use Getopt::Long 'GetOptions';
 use Mojo::Server::FCGI;
 
 __PACKAGE__->attr(description => <<'EOF');
 Start application with FCGI backend.
 EOF
 __PACKAGE__->attr(usage => <<"EOF");
-usage: $0 fcgi
+usage: $0 fcgi [OPTIONS]
+
+These options are available:
+  --reload   Automatically reload application when the source code changes.
 EOF
 
 # Oh boy! Sleep! That's when I'm a Viking!
 sub run {
-    Mojo::Server::FCGI->new->run;
-    return shift;
+    my $self = shift;
+    my $fcgi = Mojo::Server::FCGI->new;
+
+    # Options
+    @ARGV = @_ if @_;
+    GetOptions(reload => sub { $fcgi->reload(1) });
+
+    # Run
+    $fcgi->run;
+
+    return $self;
 }
 
 1;

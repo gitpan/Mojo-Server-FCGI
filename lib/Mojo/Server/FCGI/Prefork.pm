@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2009, Sebastian Riedel.
+# Copyright (C) 2008-2010, Sebastian Riedel.
 
 package Mojo::Server::FCGI::Prefork;
 
@@ -28,8 +28,14 @@ sub child {
     # Lock
     $self->accept_lock;
 
+    # Idle
+    $self->child_status('idle');
+
     # Accept
     $self->_req->Accept();
+
+    # Busy
+    $self->child_status('busy');
 
     # Unlock
     $self->accept_unlock;
