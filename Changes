@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension Mojo::Server::FCGI.
 
+0.25    2010-02-11 00:00:00
+        - Updated makefile.
+
 0.24    2010-02-11 00:00:00
         - Updated for latest Mojo release.
         - Fixed state handling. (und3f)

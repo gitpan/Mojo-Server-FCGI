@@ -13,7 +13,7 @@ use FCGI;
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
 use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.24';
+our $VERSION = '0.25';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
