@@ -13,7 +13,7 @@ use FCGI;
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
 use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.25';
+our $VERSION = '0.26';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -45,8 +45,8 @@ sub process {
     # Request body
     while (!$req->is_state(qw/done error/)) {
         my $read = STDIN->sysread(my $buffer, CHUNK_SIZE, 0);
-        $req->parse($buffer);
         last if $read <= 0;
+        $req->parse($buffer);
     }
 
     # Handle

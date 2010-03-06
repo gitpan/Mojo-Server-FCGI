@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension Mojo::Server::FCGI.
 
+0.26    2010-03-01 00:00:00
+        - Updated for latest Mojolicious release.
+
 0.25    2010-02-11 00:00:00
         - Updated makefile.
 

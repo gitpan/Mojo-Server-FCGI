@@ -49,7 +49,7 @@ WriteMakefile(
         'File::Temp'          => 0,
         'FindBin'             => 0,
         'Getopt::Long'        => 0,
-        'Mojolicious'         => '0.999920',
+        'Mojolicious'         => '0.999922',
         'Test::More'          => 0,
     },
     test => {TESTS => 't/*.t t/*/*.t t/*/*/*.t'}
