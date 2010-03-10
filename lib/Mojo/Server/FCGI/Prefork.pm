@@ -88,6 +88,8 @@ and implements the following new ones.
     my $fcgi = $prefork->fcgi;
     $prefork = $prefork->fcgi(Mojo::Server::FCGI->new);
 
+FCGI instance to use for request processing.
+
     $prefork->fcgi->app_class('Mojo::HelloWorld');
 
 =head2 C<listen>
@@ -95,6 +97,8 @@ and implements the following new ones.
     my $listen = $prefork->listen
     $prefork   = $prefork->listen(':3000');
     $prefork   = $prefork->listen('/some/unix.socket');
+
+Port or UNIX domain socket to listen on.
 
 =head1 METHODS
 
@@ -105,8 +109,12 @@ implements the following new ones.
 
     $prefork->child;
 
+Run worker process.
+
 =head2 C<parent>
 
     $prefork->parent;
+
+Run manager process.
 
 =cut

@@ -13,7 +13,7 @@ use FCGI;
 use constant CHUNK_SIZE => $ENV{MOJO_CHUNK_SIZE}   || 4096;
 use constant DEBUG      => $ENV{MOJO_SERVER_DEBUG} || 0;
 
-our $VERSION = '0.26';
+our $VERSION = '0.27';
 
 # Wow! Homer must have got one of those robot cars!
 # *Car crashes in background*
@@ -145,9 +145,13 @@ implements the following new ones.
 
     $fcgi->process;
 
+Process request.
+
 =head2 C<run>
 
     $fcgi->run;
+
+Run server.
 
 =head1 SEE ALSO
 

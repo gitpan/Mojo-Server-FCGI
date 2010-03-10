@@ -24,7 +24,7 @@ use_ok('Mojo::Server::FCGI::Prefork');
 
 # Setup
 my $server = Test::Mojo::Server->new;
-my $port   = $server->generate_port_ok;
+my $port   = $server->generate_port_ok('found free port');
 my $dir    = File::Temp::tempdir();
 my $config = File::Spec->catfile($dir, 'fcgi.config');
 my $mt     = Mojo::Template->new;
@@ -32,7 +32,7 @@ my $mt     = Mojo::Template->new;
 # FCGI setup
 my $fcgi    = File::Spec->catfile($dir, 'test.pl');
 my $prefork = Test::Mojo::Server->new;
-my $fport   = $prefork->generate_port_ok;
+my $fport   = $prefork->generate_port_ok('found free port');
 $mt->render_to_file(<<'EOF', $fcgi, $fport);
 % my $fport = shift;
 #!<%= $^X %>
@@ -50,11 +50,11 @@ Mojo::Server::FCGI::Prefork->new->listen(':<%= $fport %>')->run;
 1;
 EOF
 chmod 0777, $fcgi;
-ok(-x $fcgi);
+ok(-x $fcgi, 'script is executable');
 
 # FastCGI prefork daemon
 $prefork->command("$fcgi");
-$prefork->start_server_untested_ok;
+$prefork->start_server_untested_ok('server started');
 
 # Wait
 sleep 2;
@@ -88,18 +88,18 @@ EOF
 
 # Start
 $server->command("lighttpd -D -f $config");
-$server->start_server_ok;
+$server->start_server_ok('server started');
 
 # Request
 my $client = Mojo::Client->new;
 $client->get(
     "http://127.0.0.1:$port/test/" => sub {
         my ($self, $tx) = @_;
-        is($tx->res->code, 200);
-        like($tx->res->body, qr/Mojo is working/);
+        is($tx->res->code, 200, 'right status');
+        like($tx->res->body, qr/Mojo is working/, 'right content');
     }
 )->process;
 
 # Stop
-$prefork->stop_server_ok;
-$server->stop_server_ok;
+$prefork->stop_server_ok('server stopped');
+$server->stop_server_ok('server stopped');

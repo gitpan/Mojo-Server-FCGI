@@ -107,10 +107,14 @@ and implements the following new ones.
     my $description = $fcgi->description;
     $fcgi           = $fcgi->description('Foo!');
 
+Short description of this command, used for the command list.
+
 =head2 C<usage>
 
     my $usage = $fcgi->usage;
     $fcgi     = $fcgi->usage('Foo!');
+
+Usage information for this command, used for the help screen.
 
 =head1 METHODS
 
@@ -120,5 +124,7 @@ implements the following new ones.
 =head2 C<run>
 
     $fcgi = $fcgi->run(@ARGV);
+
+Run this command.
 
 =cut

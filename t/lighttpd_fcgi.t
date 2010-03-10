@@ -23,7 +23,7 @@ use_ok('Mojo::Server::FCGI');
 
 # Setup
 my $server = Test::Mojo::Server->new;
-my $port   = $server->generate_port_ok;
+my $port   = $server->generate_port_ok('found free port');
 my $dir    = File::Temp::tempdir();
 my $config = File::Spec->catfile($dir, 'fcgi.config');
 my $mt     = Mojo::Template->new;
@@ -46,7 +46,7 @@ Mojo::Server::FCGI->new->run;
 1;
 EOF
 chmod 0777, $fcgi;
-ok(-x $fcgi);
+ok(-x $fcgi, 'script is executable');
 
 $mt->render_to_file(<<'EOF', $config, $dir, $port, $fcgi);
 % my ($dir, $port, $fcgi) = @_;
@@ -81,17 +81,17 @@ EOF
 
 # Start
 $server->command("lighttpd -D -f $config");
-$server->start_server_ok;
+$server->start_server_ok('server started');
 
 # Request
 my $client = Mojo::Client->new;
 $client->get(
     "http://127.0.0.1:$port/test/" => sub {
         my ($self, $tx) = @_;
-        is($tx->res->code, 200);
-        like($tx->res->body, qr/Mojo is working/);
+        is($tx->res->code, 200, 'right status');
+        like($tx->res->body, qr/Mojo is working/, 'right content');
     }
 )->process;
 
 # Stop
-$server->stop_server_ok;
+$server->stop_server_ok('server stopped');
