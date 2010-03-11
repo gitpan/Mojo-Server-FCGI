@@ -1,5 +1,8 @@
 This file documents the revision history for Perl extension Mojo::Server::FCGI.
 
+0.28    2010-03-11 00:00:00
+        - Removed useless command options.
+
 0.27    2010-03-09 00:00:00
         - Cleaned up tests.
 

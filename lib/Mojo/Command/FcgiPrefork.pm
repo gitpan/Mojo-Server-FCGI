@@ -18,8 +18,6 @@ __PACKAGE__->attr(usage => <<"EOF");
 usage: $0 fcgi_prefork [OPTIONS]
 
 These options are available:
-  --clients <number>      Set maximum number of concurrent clients per child,
-                          defaults to 1.
   --daemonize             Daemonize parent.
   --group <name>          Set group name for children.
   --idle <seconds>        Set time children can be idle without getting
@@ -35,8 +33,6 @@ These options are available:
                           temporary file.
   --reload                Automatically reload application when the source
                           code changes.
-  --requests <number>     Set maximum number of requests per keep-alive
-                          connection, defaults to 100.
   --servers <number>      Set maximum number of children, defaults to 100.
   --start <number>        Set number of children to spawn at startup,
                           defaults to 5.
@@ -52,7 +48,6 @@ sub run {
     my $daemonize;
     @ARGV = @_ if @_;
     GetOptions(
-        'clients=i'  => sub { $fcgi->max_clients($_[1]) },
         daemonize    => \$daemonize,
         'group=s'    => sub { $fcgi->group($_[1]) },
         'idle=i'     => sub { $fcgi->idle_timeout($_[1]) },
@@ -63,7 +58,6 @@ sub run {
         'minspare=i' => sub { $fcgi->min_spare_servers($_[1]) },
         'pid=s'      => sub { $fcgi->pid_file($_[1]) },
         reload       => sub { $fcgi->reload(1) },
-        'requests=i' => sub { $fcgi->max_keep_alive_requests($_[1]) },
         'servers=i'  => sub { $fcgi->max_servers($_[1]) },
         'start=i'    => sub { $fcgi->start_servers($_[1]) },
         'user=s'     => sub { $fcgi->user($_[1]) }
